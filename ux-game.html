@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Yogesh Singh - UX/Product Designer</title>
+    <link rel="canonical" href="https://cyogesh56.com/ux-game.html">
+    <meta property="og:url" content="https://cyogesh56.com/ux-game.html">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon-1.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon-1.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon-1.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon-1.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon-1.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon-1.png">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/Sarala.css">
+    <link rel="stylesheet" href="assets/css/swiper-icons.css">
+    <link rel="stylesheet" href="assets/css/bs-theme-overrides.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="assets/css/Simple-Slider-swiper-bundle.min.css">
+    <link rel="stylesheet" href="assets/css/Simple-Slider.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body style="font-family: Sarala, sans-serif;">
+    <div class="mesh-gradient"></div>
+    <div class="d-flex top-bar" style="position: sticky;z-index: 100;">
+        <div class="container d-flex top-bar-container"><a class="d-flex top-bar-content mb-0" href="index.html"><img class="top-bar-image" src="assets/img/favicon-1.png" alt="Yogesh Singh logo">
+                <div class="d-flex" style="gap: 2px;">
+                    <p class="top-bar-text">Yogesh Singh</p>
+                    <div class="d-flex top-bar-subtext-area"><small class="top-bar-subtext">cy56</small><small class="top-bar-subtext">cyogesh56</small></div>
+                </div>
+            </a></div>
+    </div><style>
+        :root {
+            /* Primary Colors */
+            --primary-dark: #1a3138;
+            --primary: #325560;
+            --primary-light: #4a7988;
+            --primary-lighter: #629db0;
+            
+            /* Text Colors */
+            --text-primary: #1a1a1a;
+            --text-secondary: #2c3e50;
+            --text-muted: #5a6c7d;
+            --text-placeholder: #8a9ba8;
+            --text-white: #ffffff;
+            --text-light: #e8eef2;
+            --text-light-muted: #d1dde4;
+            
+            /* Background Colors */
+            --bg-white: #ffffff;
+            --bg-off-white: #f8f9fa;
+            --bg-light: #e8eef2;
+            --bg-muted: #d1dde4;
+            --bg-primary: #325560;
+            --bg-primary-dark: #1a3138;
+            
+            /* Neutral Colors */
+            --neutral-dark: #2c3e50;
+            --neutral-medium: #5a6c7d;
+            --neutral-light: #8a9ba8;
+            --neutral-lighter: #d1dde4;
+            
+            /* Accent Colors */
+            --accent-red: #e74c3c;
+            --accent-red-hover: #c0392b;
+            --accent-orange: #f39c12;
+            --accent-green: #27ae60;
+            --accent-green-hover: #229954;
+        }
+
+        /* --- Global Resets & Body --- */
+        * { box-sizing: border-box; }
+        
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: inherit, system-ui, -apple-system, sans-serif;
+            color: var(--text-primary);
+            background-color: var(--bg-off-white);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Custom Pattern Background for Start Screen */
+        body.start-screen-bg {
+            --s: 84px; /* control the size*/
+            --c1: #f2f2f2;
+            --c2: #cdcbcc;
+            --c3: #999999;
+            
+            --_g: 0 120deg,#0000 0;
+            background:
+                conic-gradient(            at calc(250%/3) calc(100%/3),var(--c3) var(--_g)),
+                conic-gradient(from -120deg at calc( 50%/3) calc(100%/3),var(--c2) var(--_g)),
+                conic-gradient(from  120deg at calc(100%/3) calc(250%/3),var(--c1) var(--_g)),
+                conic-gradient(from  120deg at calc(200%/3) calc(250%/3),var(--c1) var(--_g)),
+                conic-gradient(from -180deg at calc(100%/3) 50%,var(--c2)  60deg,var(--c1) var(--_g)),
+                conic-gradient(from   60deg at calc(200%/3) 50%,var(--c1)  60deg,var(--c3) var(--_g)),
+                conic-gradient(from  -60deg at 50% calc(100%/3),var(--c1) 120deg,var(--c2) 0 240deg,var(--c3) 0);
+            background-size: calc(var(--s)*sqrt(3)) var(--s);
+            background-color: var(--bg-off-white);
+            background-attachment: fixed;
+        }
+
+        /* --- Layout & Core UI Components --- */
+        .main-container { flex-grow: 1; display: flex; flex-direction: column; max-width: 32rem; margin: 0 auto; width: 100%; padding: 1rem; padding-bottom: 2rem; position: relative; }
+        .game-container { flex-grow: 1; display: flex; flex-direction: column; }
+        .confetti-canvas { position: absolute; top: 0; right: 0; bottom: 0; left: 0; pointer-events: none; z-index: 50; width: 100%; height: 100%; }
+
+        .screen-wrapper { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; margin-top: 1.5rem; }
+        .start-card { background: white; padding: 2rem; border-radius: 2rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); width: 100%; max-width: 28rem; display: flex; flex-direction: column; align-items: center; border: 1px solid var(--bg-light); }
+        @media (min-width: 640px) { .start-card { padding: 2.5rem; } }
+        
+        .icon-circle { width: 5rem; height: 5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05); background-color: var(--bg-muted); color: var(--primary); font-size: 2.25rem; }
+        .title { font-size: 1.5rem; font-weight: 700; margin: 0 0 0.75rem 0; color: var(--primary-dark); }
+        .subtitle { color: var(--text-secondary); margin: 0 0 2rem 0; max-width: 24rem; padding: 0 1rem; line-height: 1.5; }
+        
+        /* Updated Main Start Button */
+        .feed-card-button {
+            padding: 10px 12px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 500;
+            font-family: 'Sarala', inherit;
+            text-align: center;
+            font-size: clamp(0.8rem, 1vw, 1rem);
+            background: #325560;
+            color: #ffffff; /* Added for text visibility */
+            transition: all 0.4s ease-in;
+            display: inline-flex;
+            justify-content: center; /* Keep text centered in flex */
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            width: 100%; /* Kept for card layout */
+            max-width: 20rem; /* Kept for card layout */
+        }
+
+        .feed-card-button:hover {
+            background: #4a7988;
+            transition: all 0.4s ease-out;
+            box-shadow: -3px 3px 0px rgb(50, 85, 96);
+        }
+
+        /* Secondary Go Back Button */
+        .feed-card-button-secondary {
+            padding: 10px 12px;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            font-weight: 500;
+            font-family: 'Sarala', inherit;
+            text-align: center;
+            font-size: clamp(0.8rem, 1vw, 1rem);
+            background: transparent;
+            color: var(--primary);
+            transition: all 0.4s ease-in;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 20rem;
+        }
+
+        .feed-card-button-secondary:hover {
+            background: var(--bg-light);
+            transition: all 0.4s ease-out;
+        }
+
+        .btn-dark { background: var(--primary-dark); color: white; font-weight: 600; padding: 0.75rem 1.5rem; border-radius: 9999px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: none; cursor: pointer; transition: all 0.2s; width: 100%; text-align: center; font-size: 1rem; }
+        .btn-dark:hover { background: var(--primary); }
+
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin: 0.5rem 0 1rem 0; padding: 0 0.5rem; }
+        .progress-text { font-size: 0.875rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+        .hearts-container { display: flex; gap: 0.25rem; flex-shrink: 0; }
+        .heart-icon { font-size: 1.25rem; transition: color 0.3s; }
+        .heart-active { color: var(--accent-red); }
+        .heart-lost { color: var(--neutral-lighter); }
+
+        .game-card { background: white; border-radius: 1rem; padding: 1.25rem; box-shadow: 0 4px 14px 0 rgba(0,0,0,0.05), 0 0 1px 0 rgba(0,0,0,0.1); margin-bottom: 1rem; }
+        .question-title { font-size: 1.125rem; font-weight: 700; color: var(--text-primary); margin: 0 0 1.5rem 0; line-height: 1.375; }
+        
+        .options-container { display: flex; flex-direction: column; gap: 1rem; }
+        .option-btn { position: relative; width: 100%; text-align: left; background: var(--bg-off-white); border: 2px solid transparent; border-radius: 0.75rem; padding: 1rem; transition: all 0.2s; cursor: pointer; }
+        .option-btn:hover { border-color: var(--bg-muted); }
+        .option-btn:focus { outline: none; box-shadow: 0 0 0 2px var(--primary-light); }
+        .option-btn.correct { border-color: var(--accent-green); background: #eef8f2; pointer-events: none; }
+        .option-btn.incorrect { border-color: var(--accent-red); background: #fdf3f2; pointer-events: none; }
+        .option-btn.disabled { opacity: 0.5; pointer-events: none; }
+        
+        .option-badge { position: absolute; top: 0.5rem; left: 0.5rem; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: white; border: 1px solid var(--bg-muted); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); box-shadow: 0 1px 2px rgba(0,0,0,0.05); z-index: 10; }
+        .option-btn:hover .option-badge { background: var(--bg-off-white); }
+        .option-content { margin-top: 1rem; pointer-events: none; display: flex; justify-content: center; align-items: center; padding: 0.5rem; background: white; border-radius: 0.5rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid var(--bg-light); min-height: 70px; width: 100%; }
+
+        .feedback-area { display: none; flex-direction: column; gap: 0.75rem; }
+        .feedback-area.show { display: flex; }
+        .feedback-card { background: white; border-radius: 1rem; padding: 1rem; box-shadow: 0 4px 14px 0 rgba(0,0,0,0.05); border-left: 4px solid transparent; }
+        .feedback-card.correct { border-left-color: var(--accent-green); }
+        .feedback-card.incorrect { border-left-color: var(--accent-red); }
+        .feedback-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+        .feedback-title { font-weight: 700; margin: 0; }
+        .feedback-title.correct { color: var(--accent-green-hover); }
+        .feedback-title.incorrect { color: var(--accent-red-hover); }
+        .feedback-text { font-size: 0.875rem; color: var(--text-secondary); margin: 0; line-height: 1.5; }
+
+        .icon-circle-lg { width: 6rem; height: 6rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05); position: relative; font-size: 3rem; }
+        .bg-yellow-100 { background-color: #fef5e7; }
+        .bg-green-100 { background-color: #d5eedd; }
+        .bg-red-100 { background-color: #fbe2df; }
+        .score-badge-wrapper { position: absolute; bottom: -0.5rem; right: -0.5rem; background: white; border-radius: 50%; padding: 0.25rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .score-badge { color: white; font-size: 0.75rem; font-weight: 700; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .bg-red-600 { background-color: var(--accent-red-hover); }
+        .bg-blue-600 { background-color: var(--primary); }
+        
+        .next-steps-card { background: white; border-radius: 1rem; padding: 1.25rem; box-shadow: 0 4px 14px 0 rgba(0,0,0,0.05); width: 100%; max-width: 24rem; margin-bottom: 1.5rem; text-align: left; border: 1px solid var(--bg-light); }
+        .next-steps-title { font-size: 0.875rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.75rem 0; }
+        .next-step-link { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 0; color: var(--text-primary); text-decoration: none; transition: all 0.2s; font-weight: 500; }
+        .next-step-link.border-b { border-bottom: 1px solid var(--bg-light); }
+        .next-step-link:hover { color: var(--primary); }
+        .next-step-link i { color: var(--neutral-light); transition: all 0.2s; font-size: 1.25rem; }
+        .next-step-link:hover i { color: var(--primary); transform: translateX(0.25rem); }
+        .btn-text { color: var(--text-muted); font-weight: 500; font-size: 0.875rem; text-decoration: underline; text-underline-offset: 4px; background: none; border: none; cursor: pointer; transition: color 0.2s; }
+        .btn-text:hover { color: var(--text-primary); }
+
+        /* --- Animations --- */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+        }
+        .animate-shake { animation: shake 0.4s ease-in-out; }
+        
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .animate-pop-in { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+        @keyframes heartbreak {
+            0% { transform: scale(1); color: var(--accent-red); }
+            30% { transform: scale(1.4) rotate(-15deg); color: var(--accent-red); }
+            50% { transform: scale(1.2) rotate(10deg); color: var(--accent-red); }
+            100% { transform: scale(1) rotate(0deg); color: var(--neutral-lighter); }
+        }
+        .animate-heartbreak { animation: heartbreak 0.6s ease-out forwards; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .animate-spin { animation: spin 1s linear infinite; }
+        
+        @keyframes pulse { 50% { opacity: .5; } }
+        .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+
+        /* --- Modal & Exit Button --- */
+        .exit-btn { background: transparent; border: none; color: var(--text-muted); font-size: 0.875rem; font-weight: 600; cursor: pointer; padding: 0.375rem 0.5rem; display: flex; align-items: center; gap: 0.375rem; border-radius: 0.5rem; transition: all 0.2s; margin-left: -0.5rem; font-family: inherit; }
+        .exit-btn i { font-size: 1rem; }
+        .exit-btn:hover { color: var(--accent-red); background: #fdf3f2; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(26, 49, 56, 0.4); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 100; opacity: 0; transition: opacity 0.3s ease; }
+        .modal-overlay.show { display: flex; opacity: 1; }
+        .modal-card { background: white; padding: 1.5rem; border-radius: 1.25rem; width: 90%; max-width: 20rem; text-align: center; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid var(--bg-light); }
+        .modal-overlay.show .modal-card { transform: scale(1); }
+        .modal-title { font-size: 1.125rem; font-weight: 700; color: var(--primary-dark); margin: 0 0 0.5rem 0; }
+        .modal-text { font-size: 0.875rem; color: var(--text-secondary); margin: 0 0 1.5rem 0; line-height: 1.5; }
+        .modal-actions { display: flex; gap: 0.75rem; justify-content: center; }
+        .modal-btn-cancel { flex: 1; padding: 0.6rem; border-radius: 0.75rem; border: 1px solid var(--bg-muted); background: white; color: var(--text-secondary); font-weight: 600; cursor: pointer; transition: background 0.2s; font-family: inherit; font-size: 0.875rem; }
+        .modal-btn-cancel:hover { background: var(--bg-off-white); }
+        .modal-btn-exit { flex: 1; padding: 0.6rem; border-radius: 0.75rem; border: none; background: var(--accent-red); color: white; font-weight: 600; cursor: pointer; transition: background 0.2s; font-family: inherit; font-size: 0.875rem; }
+        .modal-btn-exit:hover { background: var(--accent-red-hover); }
+
+        /* --- Micro Utility Framework for Inner Question Snippets --- */
+        .w-full{width:100%}.w-1\/3{width:33.333333%}.w-2\/3{width:66.666667%}.w-16{width:4rem}.w-10{width:2.5rem}.w-8{width:2rem}
+        .h-24{height:6rem}.h-10{height:2.5rem}.h-8{height:2rem}.h-6{height:1.5rem}.h-4{height:1rem}
+        .min-h-\[48px\]{min-height:48px}.flex-1{flex:1 1 0%}
+        .flex{display:flex}.flex-col{flex-direction:column}.grid{display:grid}.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+        .items-center{align-items:center}.items-end{align-items:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.justify-around{justify-content:space-around}.justify-end{justify-content:flex-end}
+        .gap-1{gap:0.25rem}.gap-2{gap:0.5rem}.gap-4{gap:1rem}
+        .block{display:block}.relative{position:relative}.absolute{position:absolute}
+        .top-1{top:0.25rem}.top-2{top:0.5rem}.top-2\.5{top:0.625rem}.top-3\.5{top:0.875rem}.right-1{right:0.25rem}.right-2{right:0.5rem}.right-3{right:0.75rem}.left-3{left:0.75rem}
+        .p-1{padding:0.25rem}.p-2{padding:0.5rem}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-6{padding:1.5rem}
+        .px-1{padding-left:0.25rem;padding-right:0.25rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}
+        .py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}
+        .pl-9{padding-left:2.25rem}.pr-3{padding-right:0.75rem}.pr-10{padding-right:2.5rem}.pb-2{padding-bottom:0.5rem}.mb-1{margin-bottom:0.25rem}.mb-2{margin-bottom:0.5rem}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}
+        .border{border-width:1px;border-style:solid}.border-2{border-width:2px;border-style:solid}.border-b{border-bottom-width:1px;border-bottom-style:solid}.border-b-2{border-bottom-width:2px;border-bottom-style:solid}.border-t{border-top-width:1px;border-top-style:solid}
+        .border-dashed{border-style:dashed}.border-transparent{border-color:transparent}
+        .border-gray-300{border-color:var(--neutral-lighter)}.border-red-200{border-color:#f8c7c2}.border-red-500{border-color:var(--accent-red)}.border-blue-500{border-color:var(--primary)}
+        .rounded{border-radius:0.25rem}.rounded-lg{border-radius:0.5rem}.rounded-full{border-radius:9999px}.rounded-b{border-bottom-left-radius:0.25rem;border-bottom-right-radius:0.25rem}
+        .shadow-md{box-shadow:0 4px 6px -1px rgba(0,0,0,0.1),0 2px 4px -1px rgba(0,0,0,0.06)}.shadow-lg{box-shadow:0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05)}
+        .outline-none{outline:2px solid transparent;outline-offset:2px}.border-none{border:none}.cursor-not-allowed{cursor:not-allowed}.cursor-pointer{cursor:pointer}.opacity-50{opacity:0.5}.opacity-80{opacity:0.8}.overflow-hidden{overflow:hidden}
+        .text-xs{font-size:0.75rem;line-height:1rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-base{font-size:1rem;line-height:1.5rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-\[10px\]{font-size:10px}
+        .font-medium{font-weight:500}.font-semibold{font-weight:600}.font-bold{font-weight:700}.text-center{text-align:center}.text-right{text-align:right}.uppercase{text-transform:uppercase}.tracking-wide{letter-spacing:0.025em}.tracking-wider{letter-spacing:0.05em}.tracking-widest{letter-spacing:0.1em}.underline{text-decoration:underline}
+        
+        .bg-white{background-color:#fff}.bg-gray-50{background-color:var(--bg-off-white)}.bg-gray-100{background-color:var(--bg-light)}.bg-gray-200{background-color:var(--bg-muted)}.bg-gray-800{background-color:var(--text-primary)}.bg-blue-50{background-color:var(--bg-light)}.bg-blue-600{background-color:var(--primary)}.bg-red-50{background-color:#fdf3f2}.bg-red-500{background-color:var(--accent-red)}.bg-green-500{background-color:var(--accent-green)}
+        .text-white{color:#fff}.text-gray-400{color:var(--neutral-light)}.text-gray-500{color:var(--text-muted)}.text-gray-600{color:var(--text-secondary)}.text-gray-700{color:var(--neutral-dark)}.text-gray-800{color:var(--text-primary)}.text-gray-900{color:var(--primary-dark)}.text-blue-300{color:var(--primary-light)}.text-blue-500,.text-blue-600{color:var(--primary)}.text-red-500{color:var(--accent-red)}.text-red-600{color:var(--accent-red-hover)}.text-green-600{color:var(--accent-green-hover)}
+        .hover\:shadow-md:hover{box-shadow:0 4px 6px -1px rgba(0,0,0,0.1),0 2px 4px -1px rgba(0,0,0,0.06)}.hover\:underline:hover{text-decoration:underline}
+        .transition-shadow{transition-property:box-shadow;transition-timing-function:cubic-bezier(0.4,0,0.2,1);transition-duration:150ms}
+    </style>
+</head>
+<body>
+
+    <!-- Main Game Area -->
+    <main class="main-container">
+        <!-- Confetti Canvas -->
+        <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
+
+        <!-- Dynamic Game Container -->
+        <div id="game-container" class="game-container">
+            <!-- Content injected by JS -->
+        </div>
+
+        <!-- Exit Confirmation Modal -->
+        <div id="exit-modal" class="modal-overlay">
+            <div class="modal-card">
+                <h3 class="modal-title">Exit Quiz?</h3>
+                <p class="modal-text">Are you sure you want to leave? Your current progress will be lost.</p>
+                <div class="modal-actions">
+                    <button onclick="hideExitModal()" class="modal-btn-cancel">Cancel</button>
+                    <button onclick="confirmExit()" class="modal-btn-exit">Exit Quiz</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Helper to cleanly create questions
+        const q = (title, exp, a, b, aCorrect) => ({
+            title, explanation: exp,
+            options: [
+                { id: "A", correct: aCorrect, html: a },
+                { id: "B", correct: !aCorrect, html: b }
+            ]
+        });
+
+        // Expanded Game Data: 50 UX Scenarios
+        const questions = [
+            q("Which input won't give users short-term amnesia?", "Vanishing placeholders are the UX equivalent of disappearing ink. Once they start typing, they forget what the field was for. Use persistent labels!", `<div class='w-full'><input type='text' placeholder='Email Address' class='w-full p-3 border border-gray-300 rounded-lg'></div>`, `<div class='w-full flex flex-col gap-1'><label class='text-sm font-medium text-gray-700'>Email Address</label><input type='text' placeholder='e.g. name@example.com' class='w-full p-3 border border-gray-300 rounded-lg'></div>`, false),
+            q("Which button respects the existence of chubby thumbs?", "Unless your audience consists solely of needle-wielding robots, make touch targets at least 44-48pt tall to prevent rage-inducing mis-taps.", `<button class='bg-blue-600 text-white font-medium py-3 px-6 rounded-full w-full min-h-[48px]'>Add to Cart</button>`, `<button class='bg-blue-600 text-white text-sm font-medium py-1 px-4 rounded-full'>Add to Cart</button>`, true),
+            q("How do we prevent accidental digital disasters?", "Dressing up your 'Delete Everything' button in your friendly brand color is pure evil. Use semantic red so users know it's a danger zone.", `<div class='flex gap-2 w-full'><button class='flex-1 bg-gray-100 text-gray-800 py-2 rounded-lg font-medium'>Cancel</button><button class='flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium'>Delete</button></div>`, `<div class='flex gap-2 w-full'><button class='flex-1 bg-gray-100 text-gray-800 py-2 rounded-lg font-medium'>Cancel</button><button class='flex-1 bg-red-50 text-red-600 border border-red-200 py-2 rounded-lg font-medium'>Delete</button></div>`, false),
+            q("Which duo actually knows who the main character is?", "If every button screams 'CLICK ME!', none of them do. De-emphasize secondary actions so the primary one can shine like the star it is.", `<div class='flex gap-2 w-full'><button class='flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium'>Cancel</button><button class='flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium'>Submit</button></div>`, `<div class='flex gap-2 w-full'><button class='flex-1 border border-gray-300 text-gray-700 py-2 rounded-lg font-medium'>Cancel</button><button class='flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium'>Submit</button></div>`, false),
+            q("Which error doesn't rely on perfect color vision?", "Color alone is a terrible communicator. Add an icon so color-blind users don't just stare at a perfectly fine, slightly darker input box.", `<input type='text' value='wrong-email' class='w-full p-3 border-2 border-red-500 rounded-lg text-red-600'>`, `<div class='relative w-full'><input type='text' value='wrong-email' class='w-full p-3 border-2 border-red-500 rounded-lg text-red-600 pr-10'><i class='bi bi-exclamation-circle-fill absolute right-3 top-3.5 text-xl text-red-500'></i></div>`, false),
+            q("Which option saves users from unnecessary clicking cardio?", "Hiding 2 or 3 options inside a dropdown is a crime against time. Lay them out with radio buttons and save everyone a click.", `<div class='w-full flex flex-col gap-1'><label class='text-sm'>Plan</label><select class='p-3 border rounded-lg w-full bg-white'><option>Basic</option></select></div>`, `<div class='flex flex-col gap-2 w-full'><label class='flex items-center gap-2'><input type='radio' checked> Basic</label><label class='flex items-center gap-2'><input type='radio'> Pro</label></div>`, false),
+            q("Which checkbox doesn't require sniper-level precision?", "Tiny 16px squares are the enemies of human fingers. Wrap the input in the label so clicking the text toggles the box too.", `<div><input type='checkbox'> <span class='ml-1'>Accept terms</span></div>`, `<label class='flex items-center gap-2 cursor-pointer w-full'><input type='checkbox'> <span>Accept terms</span></label>`, false),
+            q("Which link isn't playing an aggressive game of hide-and-seek?", "Never trust color alone to say 'I'm clickable'. Underlines are the universal, unmistakable love language of hyperlinks.", `<p class='text-gray-600'>Read our <span class='text-blue-600'>Privacy Policy</span></p>`, `<p class='text-gray-600'>Read our <a href='#' class='text-blue-600 underline font-medium'>Privacy Policy</a></p>`, false),
+            q("How do we stop the 'Incorrect Password' rage?", "Let users see what they're typing! Blindly smashing keys is only fun if you're pretending to hack the mainframe in a 90s movie.", `<input type='password' value='password123' class='w-full p-3 border rounded-lg'>`, `<div class='relative w-full'><input type='password' value='password123' class='w-full p-3 border rounded-lg'><i class='bi bi-eye absolute right-3 top-3.5 text-xl text-gray-400'></i></div>`, false),
+            q("Which form isn't keeping toxic secrets?", "Don't wait until they hit 'Submit' to scream 'YOU FORGOT YOUR PHONE NUMBER!' Mark required fields clearly upfront.", `<div class='w-full flex flex-col gap-1'><label class='text-sm font-medium'>Phone Number</label><input type='text' class='p-3 border rounded-lg'></div>`, `<div class='w-full flex flex-col gap-1'><label class='text-sm font-medium'>Phone Number <span class='text-red-500'>*</span></label><input type='text' class='p-3 border rounded-lg'></div>`, false),
+            q("Which layout won't give your users whiplash?", "Multi-column forms force eyes to zigzag like a confused fly. Single columns offer a peaceful, linear slide down the page.", `<div class='grid grid-cols-2 gap-2 w-full'><input placeholder='First' class='p-2 border rounded'><input placeholder='Last' class='p-2 border rounded'></div>`, `<div class='flex flex-col gap-2 w-full'><input placeholder='First Name' class='p-2 border rounded'><input placeholder='Last Name' class='p-2 border rounded'></div>`, false),
+            q("How do we let users actually reach the footer?", "Infinite scroll is great for doomscrolling memes, but if your site has a footer, it becomes a mirage they'll never reach. Use pagination.", `<div class='flex flex-col items-center gap-2 w-full'><div class='h-8 bg-gray-200 w-full rounded'></div><i class='bi bi-arrow-clockwise animate-spin text-xl text-gray-400'></i></div>`, `<div class='flex justify-center gap-2 w-full'><button class='px-3 py-1 border rounded'>1</button><button class='px-3 py-1 bg-blue-600 text-white rounded'>2</button><button class='px-3 py-1 border rounded'>3</button></div>`, false),
+            q("Which empty state isn't completely depressing?", "A blank screen that just says 'Nothing here' is a sad dead end. Give them a shiny button and encourage them to create something!", `<div class='text-center p-4 text-gray-500'>No documents found.</div>`, `<div class='text-center flex flex-col items-center gap-2'><i class='bi bi-file-earmark-plus text-3xl text-blue-500'></i><p class='text-gray-600 text-sm'>No documents yet.</p><button class='text-blue-600 font-medium text-sm'>Create One</button></div>`, false),
+            q("Which tab is actually proud to be active?", "A 5% shift in text color isn't an active state, it's a whisper. Use bold lines or filled backgrounds so users know where they are.", `<div class='flex gap-4 border-b w-full'><span class='text-blue-600 pb-2'>Home</span><span class='text-gray-500 pb-2'>Profile</span></div>`, `<div class='flex gap-4 border-b w-full'><span class='text-blue-600 border-b-2 border-blue-600 font-medium pb-2'>Home</span><span class='text-gray-500 pb-2'>Profile</span></div>`, false),
+            q("Which confirmation dialog makes you read less?", "'Yes/No' requires reading the prompt twice to ensure you aren't selling your soul. 'Cancel/Discard' explains exactly what the buttons do.", `<div class='flex gap-2'><button class='px-4 py-2 bg-gray-200 rounded'>No</button><button class='px-4 py-2 bg-red-500 text-white rounded'>Yes</button></div>`, `<div class='flex gap-2'><button class='px-4 py-2 bg-gray-200 rounded'>Cancel</button><button class='px-4 py-2 bg-red-500 text-white rounded'>Discard</button></div>`, false),
+            q("Which quantity selector doesn't feel like a tax form?", "A dropdown menu just to buy 2 coffees is overkill. Plus/Minus stepper buttons are the MVPs of quick cart adjustments.", `<select class='p-2 border rounded w-16'><option>1</option><option>2</option></select>`, `<div class='flex items-center border rounded overflow-hidden'><button class='px-3 py-1 bg-gray-100'>-</button><span class='px-3'>1</span><button class='px-3 py-1 bg-gray-100'>+</button></div>`, false),
+            q("Which icon isn't pretending to be universally understood?", "Spoiler alert: Your 'clever' abstract icon makes zero sense to anyone but you. Stop the guessing games and add a text label.", `<button class='p-3 bg-gray-100 rounded-full'><i class='bi bi-share text-xl'></i></button>`, `<button class='flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-full'><i class='bi bi-share text-base'></i><span class='text-sm font-medium'>Share</span></button>`, false),
+            q("Which button is friendly to our keyboard-navigating heroes?", "Removing `outline: none` without adding a custom focus ring is a one-way ticket to accessibility jail. Let them see what's focused!", `<button class='bg-blue-600 text-white px-4 py-2 rounded outline-none'>Submit</button>`, `<button class='bg-blue-600 text-white px-4 py-2 rounded outline-none' style='box-shadow: 0 0 0 4px var(--primary-light)'>Submit</button>`, false),
+            q("How do we gently manipulate... err, guide the user?", "Hick's Law states that too many equal choices equals paralysis. Highlighting a recommended tier magically makes decisions easier.", `<div class='flex gap-2 w-full'><div class='flex-1 border p-2 rounded text-center'>Basic</div><div class='flex-1 border p-2 rounded text-center'>Pro</div></div>`, `<div class='flex gap-2 w-full items-end'><div class='flex-1 border p-2 rounded text-center'>Basic</div><div class='flex-1 border-2 border-blue-500 p-3 rounded shadow-md text-center bg-blue-50 font-bold'>Pro</div></div>`, false),
+            q("Which search bar is actually ready for action?", "If search is a primary feature, don't hide it behind a tiny magnifying glass icon. Let it stretch its legs and be seen!", `<button class='p-2 bg-gray-100 rounded-full'><i class='bi bi-search text-xl text-gray-600'></i></button>`, `<div class='relative flex-1'><i class='bi bi-search absolute left-3 top-2.5 text-base text-gray-400'></i><input placeholder='Search...' class='pl-9 p-2 border rounded-full w-full bg-gray-50'></div>`, false),
+            q("Which layout respects the natural eye-scan path?", "Left-aligned labels create a ragged, jarring reading experience. Top-aligned labels are the autobahn of speedy form completion.", `<div class='flex items-center gap-2 w-full'><label class='w-1/3 text-right text-sm'>Name:</label><input class='w-2/3 border p-2 rounded'></div>`, `<div class='flex flex-col gap-1 w-full'><label class='text-sm font-medium'>Name</label><input class='border p-2 rounded w-full'></div>`, false),
+            q("Which date field won't cause formatting anxiety?", "Is it DD/MM or MM/DD? Save users from format-induced panic attacks and just give them a native calendar picker.", `<div class='w-full'><label class='text-xs'>Date (MM/DD/YYYY)</label><input type='text' placeholder='12/31/2024' class='w-full p-2 border rounded'></div>`, `<div class='w-full'><label class='text-xs'>Date</label><input type='date' class='w-full p-2 border rounded'></div>`, false),
+            q("Which modal isn't holding the user hostage?", "Clicking outside to close is a neat trick, but an explicit 'X' button is the universal escape hatch everyone looks for.", `<div class='bg-white border p-4 rounded shadow-lg w-full text-center'>Settings Modal<br><small class='text-gray-400'>(Click outside to close)</small></div>`, `<div class='bg-white border p-4 rounded shadow-lg w-full relative'>Settings Modal<button class='absolute right-2 top-2 p-1'><i class='bi bi-x-lg text-base'></i></button></div>`, false),
+            q("Which accordion doesn't demand pinpoint accuracy?", "Make the entire row clickable. The more surface area they can poke at, the happier they are. It's basic geometry.", `<div class='flex justify-between items-center w-full border p-3 rounded'><span>Details</span><button class='p-1 bg-gray-100 rounded'><i class='bi bi-chevron-down text-base'></i></button></div>`, `<button class='flex justify-between items-center w-full border p-3 rounded hover:bg-gray-50 font-medium'><span>Details</span><i class='bi bi-chevron-down text-base text-gray-500'></i></button>`, false),
+            q("Which card is actually a joy to tap?", "Don't make them hunt for a tiny 'Read More' link. Make the whole darn card a giant, satisfying button.", `<div class='border p-3 rounded w-full'><h4>Article</h4><p class='text-xs text-gray-500'>Preview...</p><a href='#' class='text-blue-500 text-sm mt-2 block'>Read More</a></div>`, `<a href='#' class='block border p-3 rounded w-full hover:shadow-md transition-shadow'><h4>Article</h4><p class='text-xs text-gray-500'>Preview...</p><span class='text-blue-500 text-sm mt-2 block'>Read More →</span></a>`, false),
+            q("Which toggle switch isn't playing mind games?", "Is gray ON or OFF? Who knows! Use a loud, proud color like green or blue so users explicitly know the lights are on.", `<div class='w-10 h-6 bg-gray-300 rounded-full relative'><div class='w-4 h-4 bg-white rounded-full absolute right-1 top-1'></div></div>`, `<div class='w-10 h-6 bg-green-500 rounded-full relative'><div class='w-4 h-4 bg-white rounded-full absolute right-1 top-1'></div></div>`, false),
+            q("Which progress indicator tells the actual truth?", "Three anonymous dots say nothing. Tell them 'Step 1 of 3' so they know exactly how much of their life they're committing to this form.", `<div class='flex items-center gap-1 w-full justify-center'><div class='w-2 h-2 rounded-full bg-blue-500'></div><div class='w-2 h-2 rounded-full bg-gray-300'></div><div class='w-2 h-2 rounded-full bg-gray-300'></div></div>`, `<div class='text-sm font-medium text-gray-600 flex items-center gap-2'><span class='w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs'>1</span> Step 1 of 3</div>`, false),
+            q("Which form doesn't rely on 'Gotcha!' moments?", "Hiding password rules until the user fails is like giving a pop quiz before teaching the lesson. Show the rules upfront!", `<input type='password' placeholder='New Password' class='w-full p-2 border rounded border-red-500'><p class='text-red-500 text-xs mt-1'>Requires 8+ chars and a number</p>`, `<div class='w-full'><input type='password' placeholder='New Password' class='w-full p-2 border rounded'><p class='text-gray-500 text-xs mt-1'>Must be 8+ chars & include a number</p></div>`, false),
+            q("Which button ghosts the user politely?", "Making a button completely invisible when disabled causes panic. Lowering the opacity says 'I'm here, I'm just not ready for you yet'.", `<div class='w-full h-10'></div>`, `<button class='w-full h-10 bg-blue-600 text-white rounded opacity-50 cursor-not-allowed'>Checkout</button>`, false),
+            q("Which notification badge actually communicates?", "A generic red dot is just anxiety-inducing. Give me a number so I know if I'm slightly popular or going completely viral.", `<div class='relative p-2'><i class='bi bi-bell text-2xl'></i><div class='absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full'></div></div>`, `<div class='relative p-2'><i class='bi bi-bell text-2xl'></i><div class='absolute top-1 right-1 px-1 text-[10px] bg-red-500 text-white rounded-full'>3</div></div>`, false),
+            q("Which opt-in isn't a sleazy dark pattern?", "Pre-checking the spam... err, 'marketing' box is a great way to get universally despised. Let them opt-in willingly!", `<label class='flex items-center gap-2 text-sm'><input type='checkbox' checked> Subscribe to marketing emails</label>`, `<label class='flex items-center gap-2 text-sm'><input type='checkbox'> Subscribe to marketing emails</label>`, false),
+            q("Which button isn't SCREAMING AT THE USER?", "ALL CAPS IS HARDER TO READ BECAUSE IT FORMS A SOLID RECTANGLE. Sentence case has lovely, readable shapes.", `<button class='w-full bg-blue-600 text-white py-2 rounded font-bold tracking-wide text-sm'>UPGRADE YOUR ACCOUNT</button>`, `<button class='w-full bg-blue-600 text-white py-2 rounded font-semibold text-sm'>Upgrade your account</button>`, false),
+            q("Which mistake-fixer is actually elegant?", "Confirming every single deletion is tedious. Just delete it, and offer a slick 'Undo' toast for those 'Oops' moments.", `<div class='border p-3 rounded w-full text-sm text-center bg-white shadow'>Are you sure you want to delete?<div class='mt-2 flex gap-2 justify-center'><button class='px-2 py-1 bg-gray-200 rounded'>Cancel</button><button class='px-2 py-1 bg-red-500 text-white rounded'>Yes</button></div></div>`, `<div class='bg-gray-800 text-white text-sm p-3 rounded w-full flex justify-between items-center shadow-lg'>Item deleted <button class='text-blue-300 font-medium hover:underline'>Undo</button></div>`, false),
+            q("Which error placement isn't a treasure hunt?", "Dumping all errors at the top forces users to scroll up and down like a yo-yo. Put the error right where the crime happened.", `<div class='w-full'><div class='bg-red-50 text-red-600 p-2 rounded text-xs mb-2'>Please fix the errors below.</div><input class='border-red-500 border p-2 rounded w-full'></div>`, `<div class='w-full'><input class='border-red-500 border p-2 rounded w-full'><p class='text-red-500 text-xs mt-1'>This field is required.</p></div>`, false),
+            q("Which sub-label actually passed its eye exam?", "Light gray text on a white background is an aesthetic choice that only 20-year-old designers with perfect vision appreciate. Up the contrast!", `<p class='text-gray-400 text-sm bg-white'>This is a descriptive sub-label.</p>`, `<p class='text-gray-600 text-sm bg-white font-medium'>This is a descriptive sub-label.</p>`, false),
+            q("Which loading state prevents the dreaded double-charge?", "Show a spinner and disable the button. Otherwise, impatient users will click it 14 times and accidentally buy 14 toasters.", `<button class='w-full bg-blue-600 text-white py-2 rounded'>Saving...</button>`, `<button class='w-full bg-blue-500 text-white py-2 rounded flex justify-center items-center gap-2 opacity-80 cursor-not-allowed'><i class='bi bi-arrow-clockwise text-base animate-spin'></i> Saving</button>`, false),
+            q("Which upload zone actually uses screen real estate?", "Desktop screens are huge. A tiny 'Choose File' button is sad. Give them a giant, satisfying drag-and-drop zone!", `<input type='file' class='text-sm w-full'>`, `<div class='border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center w-full bg-gray-50 text-gray-500'><i class='bi bi-cloud-arrow-up text-2xl mb-2'></i><span class='text-sm'>Drag files or click to upload</span></div>`, false),
+            q("Where does the 'Save' button belong in the West?", "Users read left to right. 'Cancel' goes back (left), 'Save' moves forward (right). Don't mess with the chronological flow!", `<div class='flex gap-2 w-full justify-end'><button class='bg-blue-600 text-white px-4 py-2 rounded'>Save</button><button class='bg-gray-100 text-gray-800 px-4 py-2 rounded'>Cancel</button></div>`, `<div class='flex gap-2 w-full justify-end'><button class='bg-gray-100 text-gray-800 px-4 py-2 rounded'>Cancel</button><button class='bg-blue-600 text-white px-4 py-2 rounded'>Save</button></div>`, false),
+            q("Which helper text isn't playing hard to get?", "Hiding formatting rules inside a tiny hover tooltip on a mobile phone is basically a prank. Just put the text on the screen.", `<div class='w-full flex items-center gap-2'><input placeholder='Tax ID' class='border p-2 rounded flex-1'><i class='bi bi-question-circle text-base text-gray-400'></i></div>`, `<div class='w-full flex flex-col gap-1'><input placeholder='Tax ID' class='border p-2 rounded'><p class='text-xs text-gray-500'>Format: XX-XXXXXXX</p></div>`, false),
+            q("Which filter UI actually wants to be used?", "Hiding your 3 most common filters in a dropdown is a tragedy. Expose them as chips so users can click 'em instantly.", `<button class='flex items-center gap-2 border px-3 py-1 rounded'><i class='bi bi-funnel text-base'></i> Filters</button>`, `<div class='flex gap-2 w-full overflow-hidden'><button class='px-3 py-1 bg-gray-800 text-white rounded-full text-xs'>All</button><button class='px-3 py-1 border rounded-full text-xs'>Active</button><button class='px-3 py-1 border rounded-full text-xs'>Done</button></div>`, false),
+            q("Which phone input respects the holy act of copy-pasting?", "Split inputs break auto-fill, break pasting, and break my spirit. Just use one field and format the numbers for them.", `<div class='flex gap-2 w-full'><input placeholder='123' class='border p-2 rounded w-1/3'><input placeholder='456' class='border p-2 rounded w-1/3'><input placeholder='7890' class='border p-2 rounded w-1/3'></div>`, `<input type='tel' placeholder='(123) 456-7890' class='border p-2 rounded w-full'>`, false),
+            q("Which dropdown doesn't let users accidentally live in 'Option 1'?", "If the first option is a valid choice, users will skip reading it. Use a disabled placeholder to force a conscious decision.", `<select class='p-2 border rounded w-full'><option></option><option>USA</option></select>`, `<select class='p-2 border rounded w-full'><option disabled selected>Select a country...</option><option>USA</option></select>`, false),
+            q("Which loader actually makes the app feel faster?", "Spinners remind us were waiting. Skeleton loaders trick our monkey brains into thinking the content is practically already there.", `<div class='w-full h-24 flex items-center justify-center bg-white'><i class='bi bi-arrow-clockwise text-2xl animate-spin text-gray-400'></i></div>`, `<div class='w-full flex flex-col gap-2'><div class='h-4 bg-gray-200 rounded w-3/4 animate-pulse'></div><div class='h-4 bg-gray-200 rounded w-1/2 animate-pulse'></div></div>`, false),
+            q("Which mobile menu doesn't bury the treasure?", "The hamburger menu is where features go to die. Use a visible bottom tab bar for the places users actually want to go.", `<div class='w-full border p-3 flex justify-between bg-white rounded'><span class='font-bold'>App</span><i class='bi bi-list text-2xl'></i></div>`, `<div class='w-full border-t p-2 flex justify-around bg-white rounded-b'><i class='bi bi-house text-xl text-blue-600'></i><i class='bi bi-search text-xl text-gray-400'></i><i class='bi bi-person text-xl text-gray-400'></i></div>`, false),
+            q("Which paragraph doesn't make your eyes work overtime?", "Center-aligned text is for wedding invitations, not interfaces. Left-align your blocks so the eye has a reliable anchor to return to.", `<p class='text-center text-sm w-full bg-white p-2 border rounded'>This is a multi-line paragraph that is centered. It is harder to read because the starting point of each line changes.</p>`, `<p class='text-left text-sm w-full bg-white p-2 border rounded'>This is a multi-line paragraph that is left-aligned. It is easier to read because the eye returns to a consistent edge.</p>`, false),
+            q("Which password field throws mobile typists a bone?", "Fat fingers + tiny keyboards = typos. Briefly showing the last typed character is a total lifesaver on mobile devices.", `<input type='password' value='••••••••' class='w-full p-2 border rounded tracking-widest'>`, `<div class='w-full flex items-center border rounded overflow-hidden'><input type='password' value='•••••••' class='p-2 flex-1 outline-none border-none tracking-widest'><span class='pr-3'>a</span></div>`, false),
+            q("Which success state sparks a tiny bit of joy?", "A dry 'Saved.' is boring. Add an icon, some color, maybe a micro-animation! Give them a tiny hit of dopamine for doing a good job.", `<div class='text-center w-full'>Saved.</div>`, `<div class='flex flex-col items-center gap-1 w-full text-green-600'><div class='w-8 h-8 rounded-full bg-green-100 flex items-center justify-center'><i class='bi bi-check-lg text-xl'></i></div><span class='text-sm font-medium'>Successfully saved!</span></div>`, false),
+            q("Which setting clearly provides instant gratification?", "Checkboxes imply 'I'll save this later when I find the submit button'. Toggle switches scream 'I AM CHANGING THIS EXACTLY RIGHT NOW'.", `<div class='w-full flex justify-between items-center'><label>Dark Mode</label><input type='checkbox'></div>`, `<div class='w-full flex justify-between items-center'><label>Dark Mode</label><div class='w-10 h-6 bg-blue-500 rounded-full relative'><div class='w-4 h-4 bg-white rounded-full absolute right-1 top-1 shadow'></div></div></div>`, false),
+            q("Which multi-select isn't actively hostile to normal people?", "Assuming users know to hold 'Ctrl/Cmd' while clicking a list box is a bold, incorrect assumption. Standard checkboxes are universally understood.", `<select multiple class='p-2 border rounded w-full text-sm'><option>Option 1</option><option>Option 2</option></select>`, `<div class='flex flex-col gap-1 w-full text-sm'><label class='flex items-center gap-2'><input type='checkbox'> Option 1</label><label class='flex items-center gap-2'><input type='checkbox'> Option 2</label></div>`, false),
+            q("Which navigation leaves a proper trail of breadcrumbs?", "A simple 'Back' button doesn't tell me where I am. Show the full path so I don't feel like I'm lost in a dark digital forest.", `<a href='#' class='text-blue-500 text-sm flex items-center gap-1'><i class='bi bi-arrow-left text-base'></i> Back</a>`, `<div class='text-sm flex items-center gap-2 text-gray-500'><span>Home</span> / <span>Products</span> / <span class='text-gray-900 font-medium'>Shoes</span></div>`, false),
+        ];
+
+        let currentSessionQuestions = [];
+        let currentQuestionIndex = -1; 
+        let score = 0;
+        let lives = 3;
+        let hasAnswered = false;
+
+        const container = document.getElementById('game-container');
+
+        function renderStartScreen() {
+            document.body.classList.add('start-screen-bg');
+
+            container.innerHTML = `
+                <div class="screen-wrapper animate-pop-in">
+                    <div class="start-card">
+                        <div class="icon-circle">
+                            <i class="bi bi-eye"></i>
+                        </div>
+                        <h2 class="title">The Snarky UX Eye Test</h2>
+                        <p class="subtitle">Do you actually have designer chops, or do you just make things look pretty? Survive 10 questions. You have <strong style="color: var(--accent-red)">3 hearts</strong>. Don't mess up.</p>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%; align-items: center;">
+                            <button onclick="startGame()" class="feed-card-button">
+                                Prove Your Worth
+                            </button>
+                            <button onclick="history.back()" class="feed-card-button-secondary">
+                                Go Back
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderQuestion(index) {
+            hasAnswered = false;
+            const q = currentSessionQuestions[index];
+            const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+            const heartsHtml = Array(3).fill(0).map((_, i) => `
+                <i class="bi heart-icon ${i < lives ? 'bi-heart-fill heart-active' : 'bi-heartbreak-fill heart-lost'}"></i>
+            `).join('');
+
+            container.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin: 0.5rem 0; padding: 0 0.5rem;">
+                    <button onclick="showExitModal()" class="exit-btn" title="Exit Quiz">
+                        <i class="bi bi-box-arrow-left"></i> Exit Quiz
+                    </button>
+                    <div class="hearts-container" id="hearts-container">${heartsHtml}</div>
+                </div>
+                
+                <div class="progress-header" style="margin-top: 0; margin-bottom: 1rem;">
+                    <div class="progress-text">Question ${index + 1} of 10</div>
+                </div>
+
+                <div class="game-card animate-pop-in">
+                    <h3 class="question-title">${q.title}</h3>
+                    
+                    <div class="options-container">
+                        ${shuffledOptions.map((opt, i) => `
+                            <div 
+                                onclick="handleAnswer('${opt.id}', this)"
+                                onkeydown="if(event.key==='Enter'||event.key===' ') handleAnswer('${opt.id}', this)"
+                                role="button" tabindex="0"
+                                class="option-btn"
+                                data-correct="${opt.correct}">
+                                <div class="option-badge">${i === 0 ? 'A' : 'B'}</div>
+                                <div class="option-content">${opt.html}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div id="feedback-area" class="feedback-area animate-pop-in">
+                    <div class="feedback-card" id="feedback-card-inner">
+                        <div class="feedback-header">
+                            <span id="feedback-icon"></span>
+                            <h4 class="feedback-title" id="feedback-title"></h4>
+                        </div>
+                        <p class="feedback-text" id="feedback-text"></p>
+                    </div>
+                    <button id="next-btn" onclick="nextQuestion()" class="feed-card-button" style="max-width: 100%;">
+                        Next Question
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderEndScreen() {
+            let isWin = lives > 0;
+            if (isWin) fireConfetti();
+            
+            let message = "";
+            let iconHtml = "";
+            let iconBgClass = isWin ? (score === 10 ? 'bg-yellow-100' : 'bg-green-100') : 'bg-red-100';
+            let badgeBgClass = isWin ? 'bg-blue-600' : 'bg-red-600';
+            
+            if (!isWin) {
+                message = "Oof. You lost all your hearts. Time to go read the Nielsen Norman Group archives and think about what you've done.";
+                iconHtml = '<i class="bi bi-heartbreak-fill" style="color: var(--accent-red)"></i>';
+            } else if (score === 10) {
+                message = "Flawless victory. You might just be the reincarnation of Dieter Rams. Respect.";
+                iconHtml = '<i class="bi bi-trophy-fill" style="color: var(--accent-orange)"></i>';
+            } else {
+                message = "Not bad! You survived the design gauntlet with a few bumps and bruises. We'll take it.";
+                iconHtml = '<i class="bi bi-check-circle-fill" style="color: var(--accent-green)"></i>';
+            }
+
+            container.innerHTML = `
+                <div class="screen-wrapper animate-pop-in" style="margin-top: 2rem;">
+                    <div class="icon-circle-lg ${iconBgClass}">
+                        ${iconHtml}
+                        <div class="score-badge-wrapper">
+                            <div class="score-badge ${badgeBgClass}">${score}/10</div>
+                        </div>
+                    </div>
+                    <h2 class="title">${isWin ? 'Challenge Complete!' : 'Game Over'}</h2>
+                    <p class="subtitle" style="margin-bottom: 2rem;">${message}</p>
+                    
+                    <div class="next-steps-card">
+                        <h3 class="next-steps-title">Next Steps</h3>
+                        <a href="experiments.html" class="next-step-link border-b">
+                            <span>View all Experiments</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                        <a href="index.html" class="next-step-link">
+                            <span>View my Projects</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                    
+                    <button onclick="renderStartScreen();" class="btn-text">Play Again</button>
+                </div>
+            `;
+        }
+
+        function startGame() {
+            document.body.classList.remove('start-screen-bg');
+            currentSessionQuestions = [...questions].sort(() => Math.random() - 0.5).slice(0, 10);
+            currentQuestionIndex = 0;
+            score = 0;
+            lives = 3;
+            renderQuestion(currentQuestionIndex);
+        }
+
+        function handleAnswer(selectedId, element) {
+            if (hasAnswered) return;
+            hasAnswered = true;
+
+            const isCorrect = element.dataset.correct === 'true';
+            const allButtons = document.querySelectorAll('.option-btn');
+
+            allButtons.forEach(btn => {
+                if (btn.dataset.correct === 'true') {
+                    btn.classList.add('correct');
+                    btn.querySelector('.option-badge').innerHTML = '<i class="bi bi-check-lg" style="color: var(--accent-green-hover)"></i>';
+                } else if (btn === element && !isCorrect) {
+                    btn.classList.add('incorrect', 'animate-shake');
+                    btn.querySelector('.option-badge').innerHTML = '<i class="bi bi-x-lg" style="color: var(--accent-red-hover)"></i>';
+                } else {
+                    btn.classList.add('disabled');
+                }
+            });
+
+            const feedbackArea = document.getElementById('feedback-area');
+            const feedbackCardInner = document.getElementById('feedback-card-inner');
+            const feedbackTitle = document.getElementById('feedback-title');
+            const feedbackText = document.getElementById('feedback-text');
+            const feedbackIcon = document.getElementById('feedback-icon');
+            const nextBtn = document.getElementById('next-btn');
+
+            feedbackArea.classList.add('show');
+            feedbackText.textContent = currentSessionQuestions[currentQuestionIndex].explanation;
+
+            if (isCorrect) {
+                score++;
+                feedbackCardInner.classList.add('correct');
+                feedbackTitle.textContent = "Great eye!";
+                feedbackTitle.className = 'feedback-title correct';
+                feedbackIcon.innerHTML = '<i class="bi bi-check-circle-fill" style="color: var(--accent-green); font-size: 1.25rem;"></i>';
+            } else {
+                lives--;
+                feedbackCardInner.classList.add('incorrect');
+                feedbackTitle.textContent = "Not quite.";
+                feedbackTitle.className = 'feedback-title incorrect';
+                feedbackIcon.innerHTML = '<i class="bi bi-exclamation-circle-fill" style="color: var(--accent-red); font-size: 1.25rem;"></i>';
+                
+                const heartIcons = document.querySelectorAll('#hearts-container i');
+                if(heartIcons[lives]) {
+                    heartIcons[lives].className = 'bi bi-heartbreak-fill heart-icon animate-heartbreak';
+                }
+            }
+
+            if (lives === 0 || currentQuestionIndex === currentSessionQuestions.length - 1) {
+                nextBtn.textContent = "See Results";
+            }
+
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        function nextQuestion() {
+            if (lives === 0) {
+                renderEndScreen();
+                return;
+            }
+            
+            currentQuestionIndex++;
+            if (currentQuestionIndex >= currentSessionQuestions.length) {
+                renderEndScreen();
+            } else {
+                renderQuestion(currentQuestionIndex);
+            }
+        }
+
+        // --- Modal Logic ---
+        function showExitModal() {
+            document.getElementById('exit-modal').classList.add('show');
+        }
+
+        function hideExitModal() {
+            document.getElementById('exit-modal').classList.remove('show');
+        }
+
+        function confirmExit() {
+            hideExitModal();
+            renderStartScreen();
+        }
+
+        function fireConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const colors = ['#325560', '#4a7988', '#629db0', '#27ae60', '#f39c12', '#e74c3c', '#9b59b6'];
+
+            for (let i = 0; i < 100; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2 + 100,
+                    r: Math.random() * 6 + 2,
+                    dx: Math.random() * 10 - 5,
+                    dy: Math.random() * -10 - 5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    tilt: Math.floor(Math.random() * 10) - 10,
+                    tiltAngleInc: (Math.random() * 0.07) + 0.05,
+                    tiltAngle: 0
+                });
+            }
+
+            let animationId;
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let active = false;
+
+                particles.forEach(p => {
+                    p.tiltAngle += p.tiltAngleInc;
+                    p.y += (Math.cos(p.tiltAngle) + 1 + p.r / 2) / 2;
+                    p.x += Math.sin(p.tiltAngle) * 2;
+                    p.dy += 0.05; 
+                    p.y += p.dy;
+                    p.x += p.dx;
+
+                    if (p.y <= canvas.height) active = true;
+
+                    ctx.beginPath();
+                    ctx.lineWidth = p.r;
+                    ctx.strokeStyle = p.color;
+                    ctx.moveTo(p.x + p.tilt + p.r, p.y);
+                    ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r);
+                    ctx.stroke();
+                });
+
+                if (active) {
+                    animationId = requestAnimationFrame(draw);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+            draw();
+            
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        }
+
+        renderStartScreen();
+    </script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="assets/js/DownloadCV.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="assets/js/LightboxExpandCarousel.js"></script>
+    <script src="assets/js/Loader.js"></script>
+    <script src="assets/js/ModalJS.js"></script>
+    <script src="assets/js/Project-dropdown.js"></script>
+    <script src="assets/js/ShareModule.js"></script>
+</body>
+
+</html>
