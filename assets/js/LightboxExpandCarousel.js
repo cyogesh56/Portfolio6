@@ -214,37 +214,52 @@
                     this.videoContainer.className = 'lightbox-video-container active';
                 }
                 
-                const isVideo = item.src.match(/\.(mp4|webm|ogg)$/i);
+                const isNativeVideo = item.src.match(/\.(mp4|webm|ogg)$/i);
+                const isYouTube = item.src.match(/(youtu\.be\/|youtube\.com\/(watch\?(.*&)?v=|(embed|v)\/))([^\?&"'>]+)/i);
+                const isVideo = isNativeVideo || isYouTube;
                 
                 if (isVideo) {
                     this.img.style.display = 'none';
                     this.videoContainer.style.display = 'flex';
                     this.videoContainer.innerHTML = '';
                     
-                    const vidEl = document.createElement('video');
-                    vidEl.className = 'custom-yt-video';
-                    vidEl.style.width = '100%';
-                    vidEl.style.height = '100%';
-                    vidEl.src = item.src;
-                    
-                    if (item.videoEl) {
-                        vidEl.setAttribute('hassound', item.videoEl.getAttribute('hassound') || 'true');
-                        vidEl.setAttribute('hascontrols', item.videoEl.getAttribute('hascontrols') || 'true');
-                        vidEl.setAttribute('autoplay', item.videoEl.getAttribute('autoplay') || 'false');
-                        vidEl.setAttribute('loop', item.videoEl.getAttribute('loop') || 'true');
-                        if (item.videoEl.hasAttribute('poster')) {
-                            vidEl.setAttribute('poster', item.videoEl.getAttribute('poster'));
-                        }
+                    if (isYouTube) {
+                        const ytId = isYouTube[5];
+                        const iframe = document.createElement('iframe');
+                        // Use autoplay and allow fullscreen for the lightbox iframe
+                        iframe.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0&controls=1`;
+                        iframe.style.width = '100%';
+                        iframe.style.height = '100%';
+                        iframe.style.border = 'none';
+                        iframe.setAttribute('allow', 'autoplay; fullscreen; encrypted-media');
+                        iframe.setAttribute('allowfullscreen', 'true');
+                        this.videoContainer.appendChild(iframe);
                     } else {
-                        vidEl.setAttribute('hassound', 'true');
-                        vidEl.setAttribute('hascontrols', 'true');
-                        vidEl.setAttribute('autoplay', 'false');
-                        vidEl.setAttribute('loop', 'true');
-                    }
+                        const vidEl = document.createElement('video');
+                        vidEl.className = 'custom-yt-video';
+                        vidEl.style.width = '100%';
+                        vidEl.style.height = '100%';
+                        vidEl.src = item.src;
+                        
+                        if (item.videoEl) {
+                            vidEl.setAttribute('hassound', item.videoEl.getAttribute('hassound') || 'true');
+                            vidEl.setAttribute('hascontrols', item.videoEl.getAttribute('hascontrols') || 'true');
+                            vidEl.setAttribute('autoplay', item.videoEl.getAttribute('autoplay') || 'false');
+                            vidEl.setAttribute('loop', item.videoEl.getAttribute('loop') || 'true');
+                            if (item.videoEl.hasAttribute('poster')) {
+                                vidEl.setAttribute('poster', item.videoEl.getAttribute('poster'));
+                            }
+                        } else {
+                            vidEl.setAttribute('hassound', 'true');
+                            vidEl.setAttribute('hascontrols', 'true');
+                            vidEl.setAttribute('autoplay', 'false');
+                            vidEl.setAttribute('loop', 'true');
+                        }
 
-                    this.videoContainer.appendChild(vidEl);
-                    if (window.initCustomVideos) {
-                        window.initCustomVideos();
+                        this.videoContainer.appendChild(vidEl);
+                        if (window.initCustomVideos) {
+                            window.initCustomVideos();
+                        }
                     }
                 } else {
                     this.videoContainer.style.display = 'none';
