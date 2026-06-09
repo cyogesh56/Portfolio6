@@ -1,4 +1,5 @@
-const storyViewer = document.getElementById('story-viewer');
+ // === INLINE STORY LOGIC ===
+        const storyViewer = document.getElementById('story-viewer');
         const progressContainer = document.getElementById('progress-container');
         const announcer = document.getElementById('a11y-announcer');
         const slides = document.querySelectorAll('.story-slide');
@@ -13,22 +14,27 @@ const storyViewer = document.getElementById('story-viewer');
         let touchStartX = 0;
         let touchStartTime = 0;
         const swipeThreshold = 50;
-        const storyDuration = 7000; // Consistent 7 seconds
+        
+        let typeWriters = [];
+        let typingTimeouts = [];
 
         function setupTypewriters() {
             document.querySelectorAll('.typewriter').forEach(el => {
                 const text = el.textContent;
                 el.innerHTML = '';
-                [...text].forEach((char, i) => {
+                const charSpans = [];
+                [...text].forEach((char) => {
                     const span = document.createElement('span');
                     span.textContent = char;
                     span.className = 'char';
-                    span.style.animationDelay = `${i * 0.04}s`;
+                    span.style.display = 'none';
                     el.appendChild(span);
+                    charSpans.push(span);
                 });
                 const cursor = document.createElement('span');
                 cursor.className = 'typewriter-cursor';
                 el.appendChild(cursor);
+                typeWriters.push({ el, chars: charSpans, cursor });
             });
         }
 
@@ -48,6 +54,7 @@ const storyViewer = document.getElementById('story-viewer');
 
         function openStories(index, triggerElement) {
             lastFocusedElement = triggerElement;
+            document.body.style.overflow = 'hidden';
             storyViewer.classList.add('active');
             initBars();
             playStory(index);
@@ -55,6 +62,7 @@ const storyViewer = document.getElementById('story-viewer');
 
         function closeStories() {
             clearTimeout(storyTimer);
+            document.body.style.overflow = '';
             storyViewer.classList.remove('active');
             if (lastFocusedElement) lastFocusedElement.focus();
         }
@@ -65,18 +73,37 @@ const storyViewer = document.getElementById('story-viewer');
             isPaused = false;
             
             slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+            
+            document.querySelector('.slides-container').style.transform = `translateX(-${(index * 100) / slides.length}%)`;
 
-            // Reset characters typewriter
-            const chars = slides[currentIndex].querySelectorAll('.char');
-            if (chars.length > 0) {
-                chars.forEach(c => {
-                    c.style.animation = 'none';
-                    void c.offsetWidth;
-                    c.style.animation = null;
+            typingTimeouts.forEach(t => clearTimeout(t));
+            typingTimeouts = [];
+
+            if (typeWriters.length > 0) {
+                typeWriters.forEach(tw => {
+                    tw.chars.forEach(c => c.style.display = 'none');
+                    if (slides[currentIndex].contains(tw.el)) {
+                        let i = 0;
+                        function typeNext() {
+                            if (!slides[currentIndex].contains(tw.el) || !storyViewer.classList.contains('active')) return;
+                            if (isPaused) {
+                                typingTimeouts.push(setTimeout(typeNext, 40));
+                                return;
+                            }
+                            if (i < tw.chars.length) {
+                                tw.chars[i].style.display = 'inline';
+                                i++;
+                                typingTimeouts.push(setTimeout(typeNext, 40));
+                            }
+                        }
+                        typingTimeouts.push(setTimeout(typeNext, 100));
+                    }
                 });
             }
 
             const fills = document.querySelectorAll('.bar-fill');
+            const slideDuration = parseInt(slides[index].getAttribute('data-duration')) || 7000;
+
             fills.forEach((fill, i) => {
                 fill.style.transition = 'none';
                 if (i < index) {
@@ -86,12 +113,12 @@ const storyViewer = document.getElementById('story-viewer');
                 } else {
                     fill.style.width = '0%';
                     void fill.offsetWidth;
-                    fill.style.transition = `width ${storyDuration}ms linear`;
+                    fill.style.transition = `width ${slideDuration}ms linear`;
                     fill.style.width = '100%';
                     
                     startTime = Date.now();
-                    remainingTime = storyDuration;
-                    storyTimer = setTimeout(nextStory, storyDuration);
+                    remainingTime = slideDuration;
+                    storyTimer = setTimeout(nextStory, slideDuration);
                 }
             });
             
@@ -109,9 +136,7 @@ const storyViewer = document.getElementById('story-viewer');
         }
 
         function pauseStory(e) {
-            // Prevent pause if hitting the CTA button
             if (e.target.closest('.cta-button') || e.target.closest('.close-btn')) return;
-            
             if (isPaused || !storyViewer.classList.contains('active')) return;
             isPaused = true;
             clearTimeout(storyTimer);
@@ -149,15 +174,12 @@ const storyViewer = document.getElementById('story-viewer');
 
             let navigated = false;
 
-            // Swipe Logic
             if (Math.abs(diffX) > swipeThreshold) {
                 if (diffX > 0) prevStory(); 
                 else nextStory();
                 navigated = true;
             } 
-            // Tap Logic (if swipe didn't trigger and it was a short tap)
             else if (timeElapsed < 250 && !e.target.closest('.cta-button') && !e.target.closest('.close-btn')) {
-                // If the click wasn't on a navigation zone but somewhere else on the viewer
                 if (!e.target.closest('.nav-tap')) {
                     if (touch.screenX < window.innerWidth * 0.3) prevStory(); 
                     else nextStory();
@@ -165,7 +187,6 @@ const storyViewer = document.getElementById('story-viewer');
                 }
             }
 
-            // Only resume if we didn't just skip to a new story
             if (!navigated) resumeStory();
         }, {passive: true});
 
@@ -179,7 +200,14 @@ const storyViewer = document.getElementById('story-viewer');
             if (e.key === 'ArrowLeft') prevStory();
         });
 
-        window.addEventListener('DOMContentLoaded', setupTypewriters);
+        window.addEventListener('DOMContentLoaded', () => {
+            setupTypewriters();
+            const sc = document.querySelector('.slides-container');
+            if (sc) {
+                sc.style.width = `${slides.length * 100}%`;
+                slides.forEach(s => s.style.width = `${100 / slides.length}%`);
+            }
+        });
         window.addEventListener('resize', () => {
-            if (storyViewer.classList.contains('active')) playStory(currentIndex);
+            if (storyViewer && storyViewer.classList.contains('active')) playStory(currentIndex);
         });

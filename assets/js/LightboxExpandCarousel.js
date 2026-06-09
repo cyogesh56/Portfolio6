@@ -27,7 +27,7 @@
             buildDOM() {
                 // a11y: Added appropriate aria attributes to dialog and buttons for screen readers
                 const html = `
-                    <div id="custom-lightbox" role="dialog" aria-modal="true" aria-label="Image Gallery">
+                    <div id="custom-lightbox" role="dialog" aria-modal="true" aria-label="Image Gallery" inert>
                         <div class="lightbox-topbar">
                             <span class="lightbox-counter" aria-live="polite"></span> <!-- a11y: aria-live politely reads the image count changes -->
                             <div class="lightbox-top-right">
@@ -42,6 +42,7 @@
                         <button class="lightbox-nav lightbox-next" aria-label="Next Image">&#10095;</button>
                         <div class="lightbox-content-wrapper">
                             <img src="" alt="" class="lightbox-image"> <!-- a11y: alt is updated dynamically -->
+                            <div class="lightbox-video-container" style="display:none; width:100%; height:100%; align-items:center; justify-content:center; position:absolute; top:0; left:0;"></div>
                         </div>
                     </div>
                 `;
@@ -56,6 +57,7 @@
                 this.prevBtn = this.el.querySelector('.lightbox-prev');
                 this.nextBtn = this.el.querySelector('.lightbox-next');
                 this.wrapper = this.el.querySelector('.lightbox-content-wrapper');
+                this.videoContainer = this.el.querySelector('.lightbox-video-container');
             }
 
             // Finds all links with data-lightbox and groups them
@@ -75,9 +77,10 @@
                     // a11y: Attempt to fetch the original image's alt text
                     const imgEl = link.querySelector('img');
                     const alt = imgEl ? (imgEl.getAttribute('alt') || 'Gallery Image') : 'Gallery Image';
+                    const videoEl = link.querySelector('video');
 
                     if (!isDuplicate) {
-                        this.galleries[group].push({ src, alt }); // a11y: store alt text alongside src
+                        this.galleries[group].push({ src, alt, videoEl }); // a11y: store alt text alongside src
                     }
 
                     link.addEventListener('click', (e) => {
@@ -103,9 +106,13 @@
                 // Ensure UI is visible when opening
                 this.uiVisible = true;
                 this.el.classList.remove('ui-hidden');
+                
+                // a11y: Remove inert so it can receive focus
+                this.el.removeAttribute('inert');
 
                 // a11y: Transfer focus into the modal immediately
-                this.closeBtn.focus();
+                this.el.setAttribute('tabindex', '-1');
+                this.el.focus();
             }
 
             close() {
@@ -125,12 +132,17 @@
                     this.img.src = ''; 
                     this.img.alt = ''; // a11y: clear alt text
                     this.img.classList.remove('active', 'slide-in-right', 'slide-in-left', 'slide-out-left', 'slide-out-right');
+                    this.videoContainer.innerHTML = '';
+                    this.videoContainer.classList.remove('active', 'slide-in-right', 'slide-in-left', 'slide-out-left', 'slide-out-right');
                 }, 300);
 
                 // a11y: Return focus to the original element that opened the lightbox
                 if (this.previouslyFocusedElement) {
                     this.previouslyFocusedElement.focus();
                 }
+                
+                // a11y: Restore inert attribute so it cannot be focused while closed
+                this.el.setAttribute('inert', '');
             }
 
             // Method to ONLY toggle UI visibility (no fullscreen changes)
@@ -167,6 +179,9 @@
 
                 this.img.classList.remove('active');
                 this.img.className = `lightbox-image ${direction === 1 ? 'slide-out-left' : 'slide-out-right'}`;
+                
+                this.videoContainer.classList.remove('active');
+                this.videoContainer.className = `lightbox-video-container ${direction === 1 ? 'slide-out-left' : 'slide-out-right'}`;
 
                 setTimeout(() => {
                     this.currentIndex = newIndex;
@@ -181,27 +196,68 @@
                 if (total <= 1) {
                     this.prevBtn.style.display = 'none';
                     this.nextBtn.style.display = 'none';
-                    this.counter.style.display = 'none';
                 } else {
                     // Show or hide individual arrows based on current index position
                     this.prevBtn.style.display = this.currentIndex === 0 ? 'none' : 'flex';
                     this.nextBtn.style.display = this.currentIndex === total - 1 ? 'none' : 'flex';
-                    this.counter.style.display = 'block';
-                    this.counter.textContent = `${this.currentIndex + 1} / ${total}`;
                 }
+                this.counter.style.display = 'block';
+                this.counter.textContent = `${this.currentIndex + 1} / ${total}`;
+
 
                 if (animateIn) {
-                    this.img.className = `lightbox-image ${direction === 1 ? 'slide-in-right' : 'slide-in-left'}`;
+                    const animClass = direction === 1 ? 'slide-in-right' : 'slide-in-left';
+                    this.img.className = `lightbox-image ${animClass}`;
+                    this.videoContainer.className = `lightbox-video-container ${animClass}`;
                 } else {
                     this.img.className = 'lightbox-image active';
+                    this.videoContainer.className = 'lightbox-video-container active';
                 }
                 
-                this.img.src = item.src;
-                this.img.alt = item.alt; // a11y: inject descriptive alt text for screen readers
+                const isVideo = item.src.match(/\.(mp4|webm|ogg)$/i);
+                
+                if (isVideo) {
+                    this.img.style.display = 'none';
+                    this.videoContainer.style.display = 'flex';
+                    this.videoContainer.innerHTML = '';
+                    
+                    const vidEl = document.createElement('video');
+                    vidEl.className = 'custom-yt-video';
+                    vidEl.style.width = '100%';
+                    vidEl.style.height = '100%';
+                    vidEl.src = item.src;
+                    
+                    if (item.videoEl) {
+                        vidEl.setAttribute('hassound', item.videoEl.getAttribute('hassound') || 'true');
+                        vidEl.setAttribute('hascontrols', item.videoEl.getAttribute('hascontrols') || 'true');
+                        vidEl.setAttribute('autoplay', item.videoEl.getAttribute('autoplay') || 'false');
+                        vidEl.setAttribute('loop', item.videoEl.getAttribute('loop') || 'true');
+                        if (item.videoEl.hasAttribute('poster')) {
+                            vidEl.setAttribute('poster', item.videoEl.getAttribute('poster'));
+                        }
+                    } else {
+                        vidEl.setAttribute('hassound', 'true');
+                        vidEl.setAttribute('hascontrols', 'true');
+                        vidEl.setAttribute('autoplay', 'false');
+                        vidEl.setAttribute('loop', 'true');
+                    }
+
+                    this.videoContainer.appendChild(vidEl);
+                    if (window.initCustomVideos) {
+                        window.initCustomVideos();
+                    }
+                } else {
+                    this.videoContainer.style.display = 'none';
+                    this.videoContainer.innerHTML = '';
+                    this.img.style.display = 'block';
+                    this.img.src = item.src;
+                    this.img.alt = item.alt; 
+                }
 
                 if (animateIn) {
                     void this.img.offsetWidth; 
                     this.img.className = 'lightbox-image active';
+                    this.videoContainer.className = 'lightbox-video-container active';
                 }
             }
 
@@ -343,10 +399,14 @@
                             prevBtn.style.opacity = '0';
                             prevBtn.style.pointerEvents = 'none';
                             prevBtn.style.transform = 'translateY(-50%) scale(0.9)';
+                            prevBtn.setAttribute('tabindex', '-1');
+                            prevBtn.setAttribute('aria-hidden', 'true');
                         } else {
                             prevBtn.style.opacity = '1';
                             prevBtn.style.pointerEvents = 'auto';
                             prevBtn.style.transform = 'translateY(-50%) scale(1)';
+                            prevBtn.removeAttribute('tabindex');
+                            prevBtn.setAttribute('aria-hidden', 'false');
                         }
 
                         // Increased threshold slightly for mobile subpixel rendering reliability
@@ -354,10 +414,14 @@
                             nextBtn.style.opacity = '0';
                             nextBtn.style.pointerEvents = 'none';
                             nextBtn.style.transform = 'translateY(-50%) scale(0.9)';
+                            nextBtn.setAttribute('tabindex', '-1');
+                            nextBtn.setAttribute('aria-hidden', 'true');
                         } else {
                             nextBtn.style.opacity = '1';
                             nextBtn.style.pointerEvents = 'auto';
                             nextBtn.style.transform = 'translateY(-50%) scale(1)';
+                            nextBtn.removeAttribute('tabindex');
+                            nextBtn.setAttribute('aria-hidden', 'false');
                         }
                     };
 
@@ -401,7 +465,7 @@
                 // -- DOTS PAGINATION LOGIC --
                 if (config.dots && cards.length > 1) {
                     const dotsWrapper = document.createElement('div');
-                    dotsWrapper.className = 'w-100 d-flex justify-content-center align-items-center gap-2 mb-3';
+                    dotsWrapper.className = 'w-100 d-flex justify-content-center align-items-center gap-2 mt-3';
                     // a11y: Let screen readers know this is a list of pagination controls
                     dotsWrapper.setAttribute('role', 'tablist');
                     dotsWrapper.setAttribute('aria-label', `Slides pagination for carousel ${containerIndex + 1}`);
@@ -412,7 +476,7 @@
                         
                         // a11y: Make dots keyboard accessible natively as buttons
                         dot.setAttribute('role', 'tab');
-                        dot.setAttribute('tabindex', '0'); 
+                        dot.setAttribute('tabindex', dotIndex === 0 ? '0' : '-1'); 
                         dot.setAttribute('aria-label', `Go to slide ${dotIndex + 1}`);
                         dot.setAttribute('aria-selected', 'false');
 
@@ -456,10 +520,12 @@
                                 dot.classList.add('active', 'bg-success', 'opacity-100');
                                 dot.classList.remove('bg-secondary', 'opacity-25');
                                 dot.setAttribute('aria-selected', 'true'); // a11y: Let screen reader know it is active
+                                dot.setAttribute('tabindex', '0');
                             } else {
                                 dot.classList.remove('active', 'bg-success', 'opacity-100');
                                 dot.classList.add('bg-secondary', 'opacity-25');
                                 dot.setAttribute('aria-selected', 'false');
+                                dot.setAttribute('tabindex', '-1');
                             }
                         });
                     };
@@ -551,6 +617,20 @@
                 // Mouse interaction
                 icon.addEventListener('click', toggleSection);
                 
+                // Allow clicking the text box to expand (but not collapse)
+                textContainer.addEventListener('click', (e) => {
+                    // Prevent triggering if clicking a link inside the text
+                    if (e.target.closest('a')) return;
+                    
+                    if (!isExpanded) {
+                        toggleSection(e);
+                        textContainer.style.cursor = 'text'; // Remove pointer cursor after expanding
+                    }
+                });
+                
+                // Add pointer cursor initially
+                textContainer.style.cursor = 'pointer';
+
                 // a11y: Keyboard interaction
                 icon.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
@@ -559,6 +639,77 @@
                     }
                 });
 
+            });
+
+            // === 3. Centered 'Read More' Text Expander Logic ===
+            const readMoreSections = document.querySelectorAll('.read-more-section');
+            
+            readMoreSections.forEach(section => {
+                const maxLength = parseInt(section.getAttribute('data-max-length')) || 150;
+                let plainText = section.textContent.replace(/\s+/g, ' ').trim();
+
+                // If content is already short, do not build the read more logic
+                if (plainText.length <= maxLength) return; 
+
+                let previewText = plainText.substring(0, maxLength).trim() + "...";
+
+                // Store original content safely
+                const fullContentWrapper = document.createElement('div');
+                while (section.firstChild) {
+                    fullContentWrapper.appendChild(section.firstChild);
+                }
+
+                const previewContentWrapper = document.createElement('div');
+                previewContentWrapper.innerHTML = `<p class="mb-0">${previewText}</p>`;
+
+                // The container that will manage the smooth height transition
+                const textContainer = document.createElement('div');
+                textContainer.className = 'text-expandable';
+                textContainer.appendChild(previewContentWrapper);
+                textContainer.appendChild(fullContentWrapper);
+
+                // Create the accessible "Read More" button
+                const toggleBtn = document.createElement('button');
+                // a11y: Use standard button styling with btn-link for accessible focus handling
+                toggleBtn.className = 'btn btn-link text-muted fw-medium w-100 text-center text-decoration-none p-0 mt-3';
+                toggleBtn.setAttribute('aria-expanded', 'false'); // a11y: Announce collapsed state
+                toggleBtn.textContent = 'Read More';
+
+                // Append the assembled pieces back into the original container
+                section.appendChild(textContainer);
+                section.appendChild(toggleBtn);
+
+                let isExpanded = false;
+                fullContentWrapper.style.display = 'none';
+
+                // a11y: Buttons automatically capture 'Click', 'Enter', and 'Space' natively
+                toggleBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    isExpanded = !isExpanded;
+                    toggleBtn.setAttribute('aria-expanded', isExpanded); // a11y: Announce new state
+                    toggleBtn.textContent = isExpanded ? 'Show Less' : 'Read More';
+
+                    // Smooth transition logic (same as previous expander)
+                    const startHeight = textContainer.getBoundingClientRect().height;
+                    textContainer.style.height = startHeight + 'px';
+
+                    if (isExpanded) {
+                        previewContentWrapper.style.display = 'none';
+                        fullContentWrapper.style.display = 'block';
+                    } else {
+                        fullContentWrapper.style.display = 'none';
+                        previewContentWrapper.style.display = 'block';
+                    }
+
+                    textContainer.style.height = 'auto';
+                    const targetHeight = textContainer.getBoundingClientRect().height;
+                    textContainer.style.height = startHeight + 'px';
+                    void textContainer.offsetHeight; // Force reflow
+                    textContainer.style.height = targetHeight + 'px';
+
+                    setTimeout(() => { textContainer.style.height = 'auto'; }, 300);
+                });
             });
 
         });

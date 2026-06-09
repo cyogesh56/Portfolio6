@@ -1,6 +1,7 @@
-<script>
     document.addEventListener('DOMContentLoaded', function() {
         const toggle = document.getElementById('yearToggle');
+        if (!toggle) return; // Stop execution if the dropdown doesn't exist on this page
+        
         const wrapper = toggle.closest('.dropdown-container'); // Get the parent wrapper
         const dropdownList = document.getElementById('yearList');
 
@@ -25,4 +26,3 @@
             }
         });
     });
-</script>
