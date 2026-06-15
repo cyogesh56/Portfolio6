@@ -19,8 +19,9 @@
         let typingTimeouts = [];
 
         function setupTypewriters() {
+            typeWriters = []; // Clear array to prevent concurrent typing on hot-reload/re-open
             document.querySelectorAll('.typewriter').forEach(el => {
-                const text = el.textContent;
+                const text = el.textContent.replace(/\s+/g, ' ').trim();
                 el.innerHTML = '';
                 const charSpans = [];
                 [...text].forEach((char) => {
@@ -84,16 +85,17 @@
                     tw.chars.forEach(c => c.style.display = 'none');
                     if (slides[currentIndex].contains(tw.el)) {
                         let i = 0;
+                        const typeDelay = Math.max(10, Math.floor(2000 / tw.chars.length));
                         function typeNext() {
                             if (!slides[currentIndex].contains(tw.el) || !storyViewer.classList.contains('active')) return;
                             if (isPaused) {
-                                typingTimeouts.push(setTimeout(typeNext, 40));
+                                typingTimeouts.push(setTimeout(typeNext, typeDelay));
                                 return;
                             }
                             if (i < tw.chars.length) {
                                 tw.chars[i].style.display = 'inline';
                                 i++;
-                                typingTimeouts.push(setTimeout(typeNext, 40));
+                                typingTimeouts.push(setTimeout(typeNext, typeDelay));
                             }
                         }
                         typingTimeouts.push(setTimeout(typeNext, 100));
