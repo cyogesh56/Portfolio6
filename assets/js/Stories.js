@@ -181,7 +181,7 @@
                 else nextStory();
                 navigated = true;
             } 
-            else if (timeElapsed < 250 && !e.target.closest('.cta-button') && !e.target.closest('.close-btn')) {
+            else if (timeElapsed < 250 && !e.target.closest('.cta-button') && !e.target.closest('.large-button') && !e.target.closest('a') && !e.target.closest('.close-btn')) {
                 if (!e.target.closest('.nav-tap')) {
                     if (touch.screenX < window.innerWidth * 0.3) prevStory(); 
                     else nextStory();
